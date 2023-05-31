@@ -1,9 +1,7 @@
-from security import askUsername
+from security import run_security
 from modules import Modules as md
-import os
-
-# System security
-askUsername() # Username: ComputerScience  Password: PSU88@
+from time import sleep as sp
+from os import system as sys
 
 # Main program
 students_records = [
@@ -26,18 +24,49 @@ modules = {
 
 def module_selector():
     while True:
-        os.system('cls')
-        module_number = int(input("Main Menu:\n(1) Add Student\n(2) Search Student\n(3) Update Course\n(4) Filter by Course\n(5) Count Students\n(6) View Record\n(7) Quit\nEnter module number: "))
-        print("\n")
+        try:
+            sys('cls')
+            module_number = int(input("STUDENT DIRECTORY\n\nMain Menu:\n(1) Add Student\n(2) Search Student\n(3) Update Course\n(4) Filter by Course\n(5) Count Students\n(6) View Record\n(7) Quit\n\nEnter module number: "))
+            print("\n")
 
-        modules[module_number](students_records) # Will call the chosen module
+        except ValueError:
+            print("Invalid Input", end="\r")
+            sp(0.5)
+
+        except KeyError:
+            print("Invalid Input", end="\r")
+            sp(0.5)
+
+        else:
+            modules[module_number](students_records) # Will call the chosen module
         
-        continue_program = input("\nWould you like to continue? (enter any key\s to Continue || enter q to Quit) -").strip().lower()
-        if continue_program == "q":
-            print("\nThank you for using me!")
-            quit()
+            while True:
+                try:
+                    continue_program = input("\nEnter 'c' to Continue|| enter 'q' to Quit - ").strip().lower()
+                
+                    if continue_program not in "qc":
+                        raise ValueError("Invalid Input")
+                    
+                except ValueError:
+                    print("Invalid Input", end="\r")
+                    sp(0.5)
+                    sys('cls')
 
-        print("\n")
-        module_selector()
+                except KeyError:
+                    print("Invalid Input", end="\r")
+                    sp(0.5)
+                    sys('cls')
 
+                else:
+                    if continue_program == "q":
+                        print("\nThank you for using me!")
+                        quit()
+
+                    print("\n")
+                    module_selector()
+
+# System security
+run_security() # Username: ComputerScience  Password: PSU88@
+
+# Main
 module_selector()
